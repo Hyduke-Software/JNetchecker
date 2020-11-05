@@ -1,0 +1,15 @@
+﻿<Window x:Class="WpfTutorialSamples.DataGrid_control.JNetchecker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="COMMAND CENTRE 2000" Height="489" Width="564">
+    <Grid Margin="10">
+        <DataGrid Name="dgSimple" Margin="0,0,0,194">
+
+
+        </DataGrid>
+        <TextBox HorizontalAlignment="Left" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="textbox" Margin="175,344,0,0"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="105,344,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="300,344,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+    </Grid>
+
+</Window>
