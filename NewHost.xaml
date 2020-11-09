@@ -1,0 +1,25 @@
+﻿<Window x:Class="JNetchecker.NewHost"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JNetchecker"
+        mc:Ignorable="d"
+        Title="Add a new host for monitoring" Height="450" Width="800">
+    <Grid>
+        <TextBox HorizontalAlignment="Left" Margin="160,64,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="newHostnameEntryBox"/>
+        <TextBox HorizontalAlignment="Left" Margin="160,87,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="newMACEntryBox"/>
+        <TextBox HorizontalAlignment="Left" Margin="160,110,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="newPurposeEntryBox"/>
+        <TextBox HorizontalAlignment="Left" Margin="160,133,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="newOperatingSystemEntryBox"/>
+        <TextBox HorizontalAlignment="Left" Margin="160,156,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="newSerialEntryBox"/>
+        <Label Content="Host name" HorizontalAlignment="Left" Margin="55,60,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0.04" />
+        <Label Content="MAC address" HorizontalAlignment="Left" Margin="54,83,0,0" VerticalAlignment="Top"/>
+        <Label Content="Purpose" HorizontalAlignment="Left" Margin="55,106,0,0" VerticalAlignment="Top"/>
+        <Label Content="Operating System" HorizontalAlignment="Left" Margin="55,129,0,0" VerticalAlignment="Top"/>
+       
+        <Label Content="Serial" HorizontalAlignment="Left" Margin="55,152,0,0" VerticalAlignment="Top"/>
+        <Button Content="Submit new" HorizontalAlignment="Left" Margin="213,197,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="62,197,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+
+    </Grid>
+</Window>

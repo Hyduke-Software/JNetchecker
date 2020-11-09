@@ -4,8 +4,9 @@ using System.Text;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Windows;
 
-namespace WpfTutorialSamples.DataGrid_control
+namespace JNetchecker
 {
     public static class Config
     {
@@ -16,15 +17,31 @@ namespace WpfTutorialSamples.DataGrid_control
         public static Dictionary<string, string> configValues = new Dictionary<string, string>();
         //  List<host> hosts = new List<host>();
 
+        public static void addNewHost(string newHostName, List<host> hosts)
+        {
+            if (File.Exists(textFile))
+            {
+                // Read a text file line by line.  
+                string[] lines = File.ReadAllLines(textFile);
+                using (StreamWriter file =
+              new StreamWriter(textFile, true))
+                {
+                    file.WriteLine(newHostName);
+                    //adds new host to end
+                }
+
+
+            }
+        }
         public static void testConfigModule(List<host> hosts)
         {
             //default vaulues
-            hosts[1].timeseen = 69;
+        //    hosts[1].timesSeen = 69;
         }
 
-            public static List<host> getHostNames(List<host> hosts)
+        public static List<host> getHostNames()
         {
-          
+            List<host> hosts = new List<host>();
             if (File.Exists(textFile))
             {
                 // Read a text file line by line.  
@@ -33,8 +50,8 @@ namespace WpfTutorialSamples.DataGrid_control
 
                 for (int i = 0; i < lines.Length; i++)
                 {
-                    //hosts[i].hostname = lines[i]; //makes hosts[] value = lines[] value
-                    hosts.Add(new host() { hostname = lines[i]});
+
+                    hosts.Add(new host() { hostname = lines[i] });
                     //parts.Add(new Part() {PartName="crank arm", PartId=1234});
 
                 }
