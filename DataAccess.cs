@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Threading;
 using Microsoft.Data.Sqlite;
@@ -60,28 +61,18 @@ namespace JNetchecker
             using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
             {
                 connection.Open();
-
-
                 for (int i = 0; i < host.Count; i++)
                 {
                     using (var transaction = connection.BeginTransaction())
                     {
                         var insertCmd = connection.CreateCommand();
-                        //UPDATE Customers
-                        //SET ContactName = 'Juan'
-                        //WHERE Country = 'Mexico';
-                        insertCmd.CommandText = $"UPDATE hosts SET lastIP = '{host[i].lastIP}', online = {Convert.ToInt32(host[i].online)}  WHERE name = '{host[i].hostname}';";
-
+                        insertCmd.CommandText = $"UPDATE hosts SET lastIP = '{host[i].lastIP}', online = {Convert.ToInt32(host[i].online)}, response = {host[i].responseMS}  WHERE name = '{host[i].hostname}';";
                         insertCmd.ExecuteNonQuery();
-
                         transaction.Commit();
                     }
                 }
-
             }
      }
-
-
         public static void incrementSeenCount(List<host> host)
         {
             var connectionStringBuilder = new SqliteConnectionStringBuilder();
@@ -92,17 +83,70 @@ namespace JNetchecker
                 for (int i = 0; i < host.Count; i++)
                 {
                     if (host[i].online == true) //if the host is marked as online increment the count for timesSeen
+
                     {
                         using (var transaction = connection.BeginTransaction())
                         {
                             var insertCmd = connection.CreateCommand();
                             insertCmd.CommandText = $"UPDATE hosts SET timesSeen = timesSeen + 1 WHERE name = '{host[i].hostname}';";
                             insertCmd.ExecuteNonQuery();
-
                             transaction.Commit();
                         }
                     }
+                    if(host[i].online == false)
+                    {
+                        break;
+                    }
                 }
+            }
+        }
+        public static void setLastdatestamp(List<host> host)
+        {
+            var connectionStringBuilder = new SqliteConnectionStringBuilder();
+            connectionStringBuilder.DataSource = "C:/Temp/commandcentre/SqliteDB.db";
+            using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
+            {
+                connection.Open();
+                for (int i = 0; i < host.Count; i++)
+                {
+                    if (host[i].online == true) //if the host is marked as online increment the count for timesSeen
+
+                    {
+                        //lastLiveTime
+                        using (var transaction = connection.BeginTransaction())
+                        {
+                            var insertCmd = connection.CreateCommand();
+                            insertCmd.CommandText = $"UPDATE hosts SET lastLiveTime = DATE('now') WHERE name = '{host[i].hostname}';";
+                            insertCmd.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
+                    }
+                    if (host[i].online == false)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        public static void updateDatabaseEntry(host host) //sends a single host not a list.
+        {
+            var connectionStringBuilder = new SqliteConnectionStringBuilder();
+            connectionStringBuilder.DataSource = "C:/Temp/commandcentre/SqliteDB.db";
+            using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
+            {
+                connection.Open();
+                
+                        //todo: 11/1/20 add some exception handling
+                        using (var transaction = connection.BeginTransaction())
+                        {
+                            var insertCmd = connection.CreateCommand();
+                            insertCmd.CommandText = $"UPDATE hosts SET purpose = '{host.purpose}', Manufacturer = '{host.manufacturer}', " +
+                        $"serial = '{host.serial}', warranty = '{host.warranty}', Model = '{host.model}', MAC = '{host.MAC}', OS = '{host.OS}'  " +
+                        $"WHERE name = '{host.hostname}';";
+                            insertCmd.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
 
             }
         }
@@ -133,46 +177,69 @@ namespace JNetchecker
                     {
                         var message = reader.GetString(0);
                         string hostName = (string)reader["name"];
-                        string lastLiveTime = ""; 
-                        //I don't know if this works as I don't have any values
-                        try
-                        {
-                            if ((string)reader["lastLiveTime"] !=null)
-                            {
-                                lastLiveTime = (string)reader["lastLiveTime"].ToString();
-                            }
-                        }
-                        catch(Exception)
-                        {
-                        }
 
-                        //  string lastLiveTime = (string)reader["lastLiveTime"] ?? "never"; //todo: 09/11/20 add functions to manage dates when no date type
-                      
                         string purpose = (string)reader["purpose"];
                         string serial = (string)reader["serial"] ?? "unknown"; //the ?? doesn't work
                         string MAC = (string)reader["MAC"] ?? "not known";
                         string lastIP = (string)reader["lastIP"] ?? "tba";
                         string OS = (string)reader["OS"] ?? "not known";
-                        //  bool online = Convert.ToBoolean(Convert.ToInt32((long)reader["online"])); //as SQLite has no bool type
-
-                       int temp = Convert.ToInt32((long)reader["online"]);
-                        bool online = Convert.ToBoolean(temp);
-
-                        string warranty = (string)reader["warranty"] ?? "not know"; //todo: 09/11/20 build functions to do with dates
+                        bool online = Convert.ToBoolean((long)reader["online"]);
+                        
+                        string warranty = (string)reader["warranty"]; //todo: 09/11/20 build functions to do with dates
+                       
 
                         int timesSeen = Convert.ToInt32((long)reader["timesSeen"]);
-                        DBhosts.Add(new host() { hostname = hostName, lastIP = lastIP, timesSeen = timesSeen, OS= OS, MAC=MAC, purpose=purpose, online=online});
-                        // DBhosts.Add(new host() { hostname = hostName, lastIP = lastIP, timesSeen = timesSeen, OS= OS, MAC=MAC, serial=serial});
+                        int response = Convert.ToInt32((long)reader["response"]);
 
+                        //   string time = (string)(reader["lastLiveTime"]);
+                        string timeStamp = (string)(reader["lastLiveTime"]);
+                        string manufacturer = "Unknown";
+                        string model    = "Unknown";
+                        try
+                        {//todo: 11/11/20  add for other functions to stop it crashing when the value is blank
+                             manufacturer = (string)(reader["Manufacturer"]);
+                        }
+                        catch
+                        {
+                             manufacturer = "Unknown";
+                        }
+                        try
+                        {
+                             model = (string)(reader["Model"]);
+                        }
+                        catch
+                        {
+                             model = "Unknown";
+                        }
+
+                        DBhosts.Add(new host() { hostname = hostName, lastIP = lastIP, timesSeen = timesSeen, OS = OS, MAC = MAC, purpose = purpose, online = online, responseMS = response, lastLiveTime= timeStamp, serial=serial, manufacturer= manufacturer,model=model,warranty=warranty});
                     }
-                    //   j.getNewHostsList(DBhosts);
                 }
                 connection.Close();
 
             }
             return DBhosts;
         }
-
+        public static DateTime ConvertToDateTime(string str)
+        {
+            string pattern = @"(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})\.(\d{3})";
+            if (Regex.IsMatch(str, pattern))
+            {
+                Match match = Regex.Match(str, pattern);
+                int year = Convert.ToInt32(match.Groups[1].Value);
+                int month = Convert.ToInt32(match.Groups[2].Value);
+                int day = Convert.ToInt32(match.Groups[3].Value);
+                int hour = Convert.ToInt32(match.Groups[4].Value);
+                int minute = Convert.ToInt32(match.Groups[5].Value);
+                int second = Convert.ToInt32(match.Groups[6].Value);
+                int millisecond = Convert.ToInt32(match.Groups[7].Value);
+                return new DateTime(year, month, day, hour, minute, second, millisecond);
+            }
+            else
+            {
+                throw new Exception("Unable to parse.");
+            }
+        }
 
         public static void InitializeDatabase(JNetcheckerWindow j)
         {
@@ -192,8 +259,8 @@ namespace JNetchecker
                delTableCmd.ExecuteNonQuery();
 
                var createTableCmd = connection.CreateCommand();
-                createTableCmd.CommandText = "CREATE TABLE hosts(name VARCHAR(20) PRIMARY KEY, lastLiveTime VARCHAR(30) DEFAULT '', MAC VARCHAR(17) DEFAULT '', lastIP VARCHAR(39) DEFAULT '', " +
-                  "timesSeen int DEFAULT 0, purpose VARCHAR (100) DEFAULT '',serial VARCHAR (100) DEFAULT '', OS varchar(50) DEFAULT '', Manufacturer VARCHAR(50), Model VARCHAR (50) DEFAULT '',warranty VARCHAR(50) DEFAULT '', online int DEFAULT 0)"; // I believe Windows max length 15.
+                createTableCmd.CommandText = "CREATE TABLE hosts(name VARCHAR(20) PRIMARY KEY, lastLiveTime DATETIME DEFAULT CURRENT_TIMESTAMP, MAC VARCHAR(17) DEFAULT '', lastIP VARCHAR(39) DEFAULT '', " +
+                  "timesSeen int DEFAULT 0, purpose VARCHAR (100) DEFAULT '',serial VARCHAR (100) DEFAULT '', OS varchar(50) DEFAULT '', Manufacturer VARCHAR(50), Model VARCHAR (50) DEFAULT '',warranty VARCHAR(50) DEFAULT '', online int DEFAULT 0, response int DEFAULT 0)"; // I believe Windows max length 15.
                 createTableCmd.ExecuteNonQuery();
 
                 //Seed some data:

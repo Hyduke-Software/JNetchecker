@@ -1,0 +1,43 @@
+﻿<Window x:Class="JNetchecker.EditData"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JNetchecker"
+        mc:Ignorable="d"
+        Title="Edit data" Height="450" Width="864">
+    <Grid>
+        <Grid Margin="10">
+
+            <TextBox HorizontalAlignment="Left" Text="DiceCam" TextWrapping="Wrap" VerticalAlignment="Top" Width="116" x:Name="searchbox" Margin="30,292,0,0" RenderTransformOrigin="0.5,0.5" Height="56">
+                <TextBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-1.52"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </TextBox.RenderTransform>
+            </TextBox>
+            <Button Content="search" HorizontalAlignment="Left" Margin="55,359,0,0" VerticalAlignment="Top" Click="Button_Click_3"/>
+            <TextBox HorizontalAlignment="Left" Margin="0,71,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Name="osBox"/>
+            <TextBox HorizontalAlignment="Left" Margin="155,71,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="purposeBox"/>
+            <TextBox HorizontalAlignment="Left" Margin="280,71,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="MACBox"/>
+            <TextBox HorizontalAlignment="Left" Margin="405,71,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="manufacturerBox"/>
+            <TextBox HorizontalAlignment="Left" Margin="530,71,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="modelBox"/>
+            <TextBox HorizontalAlignment="Left" Margin="155,144,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="warrantyBox"/>
+            <TextBox HorizontalAlignment="Left" Margin="0,144,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Name="serialBox"/>
+            <Label Content="Operating system" HorizontalAlignment="Left" Margin="0,40,0,0" VerticalAlignment="Top"/>
+            <Label Content="Serial number" HorizontalAlignment="Left" Margin="0,113,0,0" VerticalAlignment="Top"/>
+            <Label Content="Purpose" HorizontalAlignment="Left" Margin="155,40,0,0" VerticalAlignment="Top"/>
+            <Label Content="MAC address" HorizontalAlignment="Left" Margin="280,40,0,0" VerticalAlignment="Top"/>
+            <Label Content="Manufacturer" HorizontalAlignment="Left" Margin="412,40,0,0" VerticalAlignment="Top"/>
+            <Label Content="Model" HorizontalAlignment="Left" Margin="530,40,0,0" VerticalAlignment="Top"/>
+            <Label Content="Warrany date" HorizontalAlignment="Left" Margin="155,113,0,0" VerticalAlignment="Top"/>
+            <Label Content="HOSTNAME" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top" Name="hostnameLabel"/>
+            <Button Content="Update entry" HorizontalAlignment="Left" Margin="0,229,0,0" VerticalAlignment="Top" Click="Update_Host_ButtonClick"/>
+            <Button Content="Close window" HorizontalAlignment="Left" Margin="110,229,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        </Grid>
+
+    </Grid>
+</Window>

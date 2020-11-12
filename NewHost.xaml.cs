@@ -37,6 +37,7 @@ namespace JNetchecker
             //newPurposeEntryBox
             // newOperatingSystemEntryBox
             // newSerialEntryBox
+            //todo: add the rest of value boxes
             if (newHostnameEntryBox.Text.Length > 0)
             {
                 newHostsToSend.Add(new host() { hostname = newHostnameEntryBox.Text, MAC= newMACEntryBox.Text, purpose=newPurposeEntryBox.Text, OS=newOperatingSystemEntryBox.Text, serial=newSerialEntryBox.Text});
@@ -46,11 +47,13 @@ namespace JNetchecker
             }
 
             Close();
+            
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            //todo: create cancel routine 09/11/20
+
+            Close();
         }
     }
 }

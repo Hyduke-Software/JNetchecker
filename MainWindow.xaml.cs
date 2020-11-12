@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Net.NetworkInformation;
 using System.Threading;
+using System.Diagnostics;
 
 namespace JNetchecker //todo refactor into my own name
 {
@@ -34,6 +35,7 @@ namespace JNetchecker //todo refactor into my own name
         {
                 Thread t = new Thread(() => pinger());
                 t.Start();
+            refreshTable();
         }
 
 
@@ -52,39 +54,37 @@ namespace JNetchecker //todo refactor into my own name
                     _ = reply.Status == IPStatus.Success;
 
                
-                    hosts[id].lastLiveTime = DateTime.Now;
+                    //hosts[id].lastLiveTime = DateTime.Now;
                     hosts[id].lastIP = reply.Address.ToString();
                     hosts[id].online = true;
-                    hosts[id].responseMS = reply.RoundtripTime.ToString();
-                    DataAccess.updateHostDatabase(hosts);
-                    DataAccess.incrementSeenCount(hosts);
+                    hosts[id].responseMS = Convert.ToInt32(reply.RoundtripTime);
+                   // DataAccess.updateHostDatabase(hosts);
+                   // DataAccess.incrementSeenCount(hosts);
+
                     Dispatcher.Invoke(() => //This allows the UI to be updated by another thread
                     {
                         textbox.Text = "Ping to " + hostName.ToString() + "[" + reply.Address.ToString() + "]" + " Successful"
                + " Response delay = " + reply.RoundtripTime.ToString() + " ms" + "\n";
 
-                        refreshTable();
+                      // 
                     });
                 }
                 catch (Exception j)
                 {
-                    //hosts[id].MAC = "OFFLINE";
-
-
                     Dispatcher.Invoke(() => //This allows the UI to be updated by another thread
-                    {
-                    //  hosts[id].online = false;
+                    { //somehow puts out SQL errors to the textbox... 09/11/20
                         textbox.Text = "" + j;
-
                 });
-
-
                 }
             }
-
+            //todo 09/11/20 add these into one function
+            DataAccess.updateHostDatabase(hosts);
+            DataAccess.incrementSeenCount(hosts);
+            DataAccess.setLastdatestamp(hosts);
+           
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void refreshDatabaseClick(object sender, RoutedEventArgs e)
         {
            hosts = DataAccess.readHostsFromDatabase(this);
             refreshTable();
@@ -106,20 +106,45 @@ namespace JNetchecker //todo refactor into my own name
 
 
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void launchNewHostClick(object sender, RoutedEventArgs e)
         {
-
+            //opens the New Host window
             NewHost nh = new NewHost();
-            nh.Show();
-            nh.Activate();
-           //nh.Close();
-            fullRefresh();
+            nh.Show(); //shows window
+            nh.Activate(); //moves to foreground
+
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
              DataAccess.InitializeDatabase(this); //delete. recreate database
             refreshTable();
+        }
+
+        private void search_button(object sender, RoutedEventArgs e)
+        {
+            EditData ed = new EditData();
+            ed.Show();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start("mstsc", "/v:" + hosts[dgSimple.SelectedIndex].hostname);
+                //opens a new MSTSC window going to the server selected
+            }
+            catch
+            {
+                MessageBox.Show("Error 5: No host selected in the table.");
+
+            }
+
+        }
+
+        private void about_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("A lightweight asset manager with monitoring tools developed by Hyduke Software. \n\nSupport: assetmanager@hyduke-software.net. \nCopyright 2020", "J Asset Manager Light");
         }
     }
 }
@@ -128,22 +153,21 @@ public class host
     {
     public string hostname { get; set; }
     public bool online { get; set; }
-    public DateTime lastLiveTime { get; set; }
-    
+    //public DateTime lastLiveTime { get; set; }
+    public string lastLiveTime { get; set; }
+
     public string lastIP { get; set; }
-    public string responseMS { get; set; }
+    public int responseMS { get; set; }
     public int timesSeen{ get; set; }
 
     public string purpose { get; set; }
     public string OS { get; set; }
     public string MAC { get; set; }
     public string serial { get; set; }
-    public DateTime warranty { get; set; }
-    //below are values that must be entered manually in this version
-
-
-
-
+    //todo 11/11/20 make warranty a date
+    public string warranty { get; set; }
+    public string manufacturer { get; set; }
+    public string model { get; set; }
 
 
 }
