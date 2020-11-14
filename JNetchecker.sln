@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A2183A1C-1F56-45FE-847B-53BE96D7AB4A}"
 	ProjectSection(SolutionItems) = preProject
 		DataAccess.cs = DataAccess.cs
+		..\..\..\Desktop\testscript.ps1 = ..\..\..\Desktop\testscript.ps1
 	EndProjectSection
 EndProject
 Global

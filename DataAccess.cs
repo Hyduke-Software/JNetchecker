@@ -150,7 +150,39 @@ namespace JNetchecker
 
             }
         }
+        public static List<host> readHostsNamesOnlyFromDatabase(JNetcheckerWindow j)
+        {
+            List<host> DBhosts = new List<host>();
+            var connectionStringBuilder = new SqliteConnectionStringBuilder();
 
+            //Use DB in project directory.  If it does not exist, create it:
+            //   connectionStringBuilder.DataSource = "./SqliteDB.db";
+            connectionStringBuilder.DataSource = "C:/Temp/commandcentre/SqliteDB.db";
+
+            using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
+            {
+                connection.Open();
+
+                var selectCmd = connection.CreateCommand();
+
+                selectCmd.CommandText = "SELECT name FROM hosts";
+
+
+                using (var reader = selectCmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var message = reader.GetString(0);
+                        string hostName = (string)reader["name"];
+
+                        DBhosts.Add(new host() { hostname = hostName});
+                    }
+                }
+                connection.Close();
+
+            }
+            return DBhosts;
+        }
 
 
         public static List<host> readHostsFromDatabase(JNetcheckerWindow j)
@@ -168,7 +200,7 @@ namespace JNetchecker
 
                 var selectCmd = connection.CreateCommand();
                
-                selectCmd.CommandText = "SELECT * FROM hosts";
+                selectCmd.CommandText = "SELECT * FROM hosts ORDER BY name";
                 
 
                 using (var reader = selectCmd.ExecuteReader())

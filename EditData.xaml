@@ -8,19 +8,9 @@
         Title="Edit data" Height="450" Width="864">
     <Grid>
         <Grid Margin="10">
-
-            <TextBox HorizontalAlignment="Left" Text="DiceCam" TextWrapping="Wrap" VerticalAlignment="Top" Width="116" x:Name="searchbox" Margin="30,292,0,0" RenderTransformOrigin="0.5,0.5" Height="56">
-                <TextBox.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="-1.52"/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </TextBox.RenderTransform>
-            </TextBox>
             <Button Content="search" HorizontalAlignment="Left" Margin="55,359,0,0" VerticalAlignment="Top" Click="Button_Click_3"/>
             <TextBox HorizontalAlignment="Left" Margin="0,71,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Name="osBox"/>
+            <TextBox HorizontalAlignment="Left" Margin="25,331,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Name="searchbox"/>
             <TextBox HorizontalAlignment="Left" Margin="155,71,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="purposeBox"/>
             <TextBox HorizontalAlignment="Left" Margin="280,71,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="MACBox"/>
             <TextBox HorizontalAlignment="Left" Margin="405,71,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="manufacturerBox"/>
@@ -37,7 +27,17 @@
             <Label Content="HOSTNAME" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top" Name="hostnameLabel"/>
             <Button Content="Update entry" HorizontalAlignment="Left" Margin="0,229,0,0" VerticalAlignment="Top" Click="Update_Host_ButtonClick"/>
             <Button Content="Close window" HorizontalAlignment="Left" Margin="110,229,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+            <Button Content="Get all host names" HorizontalAlignment="Left" Margin="269,359,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+            <ListBox Margin="255,190,419,84" Name="allHostsListBox" ItemsSource="{Binding hostResult}" SelectionChanged="allHostsListBox_SelectionChanged_1">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding hostname}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Content="test select" HorizontalAlignment="Left" Margin="84,299,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
         </Grid>
-
     </Grid>
 </Window>

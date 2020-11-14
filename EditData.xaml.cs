@@ -26,20 +26,24 @@ namespace JNetchecker
         public EditData()
         {
             InitializeComponent();
+
+            //  List<host> hostResult = new List<host>();
+
+            hosts = DataAccess.readHostsNamesOnlyFromDatabase(null); //populates hostResult list with all hostnames
+            allHostsListBox.ItemsSource = null;
+            allHostsListBox.ItemsSource = hosts;
         }
-
-
-
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            hosts = DataAccess.readHostsFromDatabase(j); //gets data into the hosts variable
-                                                      
-            List<host> hostResult = new List<host>();
 
-            /*   var result = from i in hosts
-                            where i.hostname == searchbox.Text
-                            select i;
-                            */
+            if (searchbox.Text == "")
+            {
+                MessageBox.Show("Enter a hostname to search");
+                return;
+            }
+            hosts = DataAccess.readHostsFromDatabase(j); //gets data into the hosts variable
+
+            List<host> hostResult = new List<host>();
 
             //todo: 10/11/20 add some error checking!!!!
             hostnameLabel.Content = searchbox.Text;
@@ -48,23 +52,32 @@ namespace JNetchecker
                 if (element.hostname == searchbox.Text)
                 {
                     //todo: 10/11/20 make this copy the value of the element in one swoop
-                    hostResult.Add(new host() {hostname=element.hostname,lastIP=element.lastIP,timesSeen=element.timesSeen,
-                        OS=element.OS,MAC = element.MAC,purpose = element.purpose, online = element.online,responseMS = element.responseMS, lastLiveTime = element.lastLiveTime 
+                    hostResult.Add(new host()
+                    {
+                        hostname = element.hostname,
+                        lastIP = element.lastIP,
+                        timesSeen = element.timesSeen,
+                        OS = element.OS,
+                        MAC = element.MAC,
+                        purpose = element.purpose,
+                        online = element.online,
+                        responseMS = element.responseMS,
+                        lastLiveTime = element.lastLiveTime
                     });
-           // DBhosts.Add(new host() { hostname = hostName, lastIP = lastIP, timesSeen = timesSeen, OS = OS, MAC = MAC, purpose = purpose, online = online, responseMS = response, lastLiveTime = timeStamp });
+                    // DBhosts.Add(new host() { hostname = hostName, lastIP = lastIP, timesSeen = timesSeen, OS = OS, MAC = MAC, purpose = purpose, online = online, responseMS = response, lastLiveTime = timeStamp });
 
                     break; // If you only want to find the first instance a break here would be best for your application
                 }
             }
 
 
-            osBox.Text           = hostResult[0].OS;
-            purposeBox.Text      = hostResult[0].purpose;
-            MACBox.Text          = hostResult[0].MAC;
+            osBox.Text = hostResult[0].OS;
+            purposeBox.Text = hostResult[0].purpose;
+            MACBox.Text = hostResult[0].MAC;
             manufacturerBox.Text = "JamesTech";
-            modelBox.Text        = "Computer 2000";
-            serialBox.Text       = hostResult[0].serial;
-            warrantyBox.Text     = hostResult[0].warranty;
+            modelBox.Text = "Computer 2000";
+            serialBox.Text = hostResult[0].serial;
+            warrantyBox.Text = hostResult[0].warranty;
             //  
         }
 
@@ -78,10 +91,13 @@ namespace JNetchecker
         {
             //creates new host from the text box values
             //passes to function to update database
+            string text = allHostsListBox.SelectedItem.ToString();
+            MessageBox.Show(text);
 
-            if(searchbox.Text == "")
+
+            if (searchbox.Text == "" && allHostsListBox.SelectedItem.ToString() == "")
             {
-                MessageBox.Show("Enter a hostname");
+                MessageBox.Show("Enter a hostname or select from the list");
                 return;
             }
 
@@ -101,6 +117,41 @@ namespace JNetchecker
                 });
 
             Close();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+
+
+        }
+
+
+
+        private void allHostsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+
+            MessageBox.Show("" + allHostsListBox.SelectedIndex + hosts[allHostsListBox.SelectedIndex].hostname);
+        }
+
+        private void allHostsListBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {            //  MessageBox.Show("selected" + hosts[allHostsListBox.SelectedIndex].hostname);
+            hosts = DataAccess.readHostsFromDatabase(null); //populates hostResult list with all hostnames
+
+            osBox.Text = hosts[allHostsListBox.SelectedIndex].OS;
+            purposeBox.Text = hosts[allHostsListBox.SelectedIndex].purpose;
+            MACBox.Text = hosts[allHostsListBox.SelectedIndex].MAC;
+            manufacturerBox.Text = hosts[allHostsListBox.SelectedIndex].manufacturer;
+            modelBox.Text = hosts[allHostsListBox.SelectedIndex].model;
+            serialBox.Text = hosts[allHostsListBox.SelectedIndex].serial;
+            warrantyBox.Text = hosts[allHostsListBox.SelectedIndex].warranty;
+            //todo 14/11/20 clean up, error checking required
+
         }
     }
 }

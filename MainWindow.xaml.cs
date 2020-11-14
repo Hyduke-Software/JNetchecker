@@ -4,26 +4,24 @@ using System.Windows;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Diagnostics;
+using System.IO;
 
 namespace JNetchecker //todo refactor into my own name
 {
     public partial class JNetcheckerWindow : Window
     {
         List<host> hosts = new List<host>();
-        //  JNetcheckerWindow james = new JNetcheckerWindow();
         public JNetcheckerWindow()
         {
             InitializeComponent();
-           
-            // 
             refreshTable();
         }
 
         public void fullRefresh()
         {
-            //dgSimple.ItemsSource = null;
-         //   hosts = Config.getHostNames();
-            dgSimple.ItemsSource = hosts;
+           dgSimple.ItemsSource = null;
+           hosts = Config.getHostNames();
+           dgSimple.ItemsSource = hosts;
         }
         public void refreshTable()
         {
@@ -49,18 +47,14 @@ namespace JNetchecker //todo refactor into my own name
             {
                 try
                 {
+                    //sends ping command
                     hostName = hosts[id].hostname;
                     reply = p.Send(hostName);
                     _ = reply.Status == IPStatus.Success;
 
-               
-                    //hosts[id].lastLiveTime = DateTime.Now;
                     hosts[id].lastIP = reply.Address.ToString();
                     hosts[id].online = true;
                     hosts[id].responseMS = Convert.ToInt32(reply.RoundtripTime);
-                   // DataAccess.updateHostDatabase(hosts);
-                   // DataAccess.incrementSeenCount(hosts);
-
                     Dispatcher.Invoke(() => //This allows the UI to be updated by another thread
                     {
                         textbox.Text = "Ping to " + hostName.ToString() + "[" + reply.Address.ToString() + "]" + " Successful"
@@ -92,7 +86,6 @@ namespace JNetchecker //todo refactor into my own name
 
         public void textBoxUpdater(string text)
         {
-
             textbox.AppendText(text+"\r");
         }
 
@@ -103,8 +96,6 @@ namespace JNetchecker //todo refactor into my own name
 
             refreshTable();
         }
-
-
 
         private void launchNewHostClick(object sender, RoutedEventArgs e)
         {
@@ -132,20 +123,27 @@ namespace JNetchecker //todo refactor into my own name
             try
             {
                 Process.Start("mstsc", "/v:" + hosts[dgSimple.SelectedIndex].hostname);
-                //opens a new MSTSC window going to the server selected
+                //opens a new MSTSC window going to the server row selected
             }
             catch
             {
                 MessageBox.Show("Error 5: No host selected in the table.");
 
             }
-
         }
-
         private void about_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("A lightweight asset manager with monitoring tools developed by Hyduke Software. \n\nSupport: assetmanager@hyduke-software.net. \nCopyright 2020", "J Asset Manager Light");
         }
+        private void launchPowerShell(object sender, RoutedEventArgs e)
+        {
+           // string strCmdText = Path.Combine(Directory.GetCurrentDirectory(), "testscript.ps1"); todo use var instead of hardcoded 
+
+            Process.Start("powershell", "C:/Users/James/Desktop/testscript.ps1 emerald-iii");
+            //test to launch a powershell script with a variable. TODO: 14/11/20 add a function such as 
+
+        }
+
     }
 }
 
@@ -168,6 +166,10 @@ public class host
     public string warranty { get; set; }
     public string manufacturer { get; set; }
     public string model { get; set; }
+    //new values for later release 14/11/20
+    public string location { get; set; }
+    public string owner { get; set; }
+    public string notes { get; set; }
 
 
 }
