@@ -91,11 +91,8 @@ namespace JNetchecker
         {
             //creates new host from the text box values
             //passes to function to update database
-            string text = allHostsListBox.SelectedItem.ToString();
-            MessageBox.Show(text);
 
-
-            if (searchbox.Text == "" && allHostsListBox.SelectedItem.ToString() == "")
+            if (searchbox.Text == "" && hostnameLabel.Content.ToString()=="")
             {
                 MessageBox.Show("Enter a hostname or select from the list");
                 return;
@@ -106,7 +103,8 @@ namespace JNetchecker
             DataAccess.updateDatabaseEntry(
                 new host()
                 {
-                    hostname = searchbox.Text,
+                    //   hostname = searchbox.Text, //todo: 16/11/20 make the search box be usable in edit.
+                    hostname = hostnameLabel.Content.ToString(),
                     OS = osBox.Text,
                     MAC = MACBox.Text,
                     purpose = purposeBox.Text,
@@ -114,18 +112,14 @@ namespace JNetchecker
                     serial = serialBox.Text,
                     manufacturer = manufacturerBox.Text,
                     model = modelBox.Text
-                });
+                }); ;
 
             Close();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
-
-
         }
-
 
 
         private void allHostsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -142,7 +136,8 @@ namespace JNetchecker
         private void allHostsListBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {            //  MessageBox.Show("selected" + hosts[allHostsListBox.SelectedIndex].hostname);
             hosts = DataAccess.readHostsFromDatabase(null); //populates hostResult list with all hostnames
-
+            searchbox.Text = "";
+            hostnameLabel.Content = hosts[allHostsListBox.SelectedIndex].hostname;
             osBox.Text = hosts[allHostsListBox.SelectedIndex].OS;
             purposeBox.Text = hosts[allHostsListBox.SelectedIndex].purpose;
             MACBox.Text = hosts[allHostsListBox.SelectedIndex].MAC;

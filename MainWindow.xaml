@@ -37,7 +37,7 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-        <Button Content="ping" HorizontalAlignment="Left" Margin="105,344,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="ping" HorizontalAlignment="Left" Margin="105,344,0,0" VerticalAlignment="Top" Click="PingButton_Click"/>
         <Button Content="load from database" HorizontalAlignment="Left" Margin="338,329,0,0" VerticalAlignment="Top" Click="refreshDatabaseClick"/>
         <Button Content="Add Host" HorizontalAlignment="Left" Margin="356,294,0,0" VerticalAlignment="Top" Click="launchNewHostClick"/>
         <Button Content="ititilize database del/relopad" HorizontalAlignment="Left" Margin="175,299,0,0" VerticalAlignment="Top" Click="Button_Click_3"/>

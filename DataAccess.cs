@@ -303,12 +303,6 @@ namespace JNetchecker
                     insertCmd.CommandText = "INSERT INTO hosts (name, purpose) VALUES('raspberrypi','Mainframe cooling')";
                     insertCmd.ExecuteNonQuery();
 
-                    insertCmd.CommandText = "INSERT INTO hosts (name, purpose) VALUES('emerald-iii','owning noobs')";
-                    insertCmd.ExecuteNonQuery();
-
-                    insertCmd.CommandText = "INSERT INTO hosts (name, purpose) VALUES('192.168.1.254','The Internets')";
-                    insertCmd.ExecuteNonQuery();
-
                     transaction.Commit();
                 }
 

@@ -29,8 +29,9 @@ namespace JNetchecker //todo refactor into my own name
             dgSimple.ItemsSource = null;
             dgSimple.ItemsSource = hosts;
         }
-        public void Button_Click(object sender, EventArgs e)
+        public void PingButton_Click(object sender, EventArgs e)
         {
+            //calls the pinger() and then uppdates the table with refreshTable()
                 Thread t = new Thread(() => pinger());
                 t.Start();
             refreshTable();
@@ -41,8 +42,6 @@ namespace JNetchecker //todo refactor into my own name
         Ping p = new Ping();
         PingReply reply;
         string hostName;
-
-
             for (int id = 0; id < hosts.Count; id++)
             {
                 try
@@ -65,10 +64,14 @@ namespace JNetchecker //todo refactor into my own name
                 }
                 catch (Exception j)
                 {
-                    Dispatcher.Invoke(() => //This allows the UI to be updated by another thread
-                    { //somehow puts out SQL errors to the textbox... 09/11/20
+                    Dispatcher.Invoke(() => 
+                    { // puts out SQL errors to the textbox somehow, sometimes... 09/11/20
                         textbox.Text = "" + j;
                 });
+
+                    //sets host to offline and updates DB
+                    hosts[id].online = false;
+                    continue; //continues to next 
                 }
             }
             //todo 09/11/20 add these into one function
