@@ -30,6 +30,7 @@ namespace JNetchecker
 
         public static void addHostToDatabase(List<host> newHost)
         {
+            //06/12/20 even though it takes a list it only imports the first. To be removed.
             var connectionStringBuilder = new SqliteConnectionStringBuilder();
 
             //Use DB in project directory.  If it does not exist, create it:
@@ -50,6 +51,39 @@ namespace JNetchecker
                 }
             }
         }
+
+        public static void importCSVListHosts(List<host> newHost)
+        {
+            //06/12/20 to add other DB fields
+            //todo 
+            var connectionStringBuilder = new SqliteConnectionStringBuilder();
+
+            //Use DB in project directory.  If it does not exist, create it:
+            //   connectionStringBuilder.DataSource = "./SqliteDB.db";
+            connectionStringBuilder.DataSource = "C:/Temp/commandcentre/SqliteDB.db";
+
+
+            for (int i = 0; i < newHost.Count; i++) {
+
+                using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
+                {
+                    connection.Open();
+
+                    using (var transaction = connection.BeginTransaction())
+                    {
+                        var insertCmd = connection.CreateCommand();
+
+                        insertCmd.CommandText = $"INSERT INTO hosts (name, MAC, purpose, serial, OS, Manufacturer, model) VALUES('{newHost[i].hostname}','{newHost[i].MAC}','{newHost[i].purpose}','{newHost[i].serial}','{newHost[i].OS}','{newHost[i].manufacturer}','{newHost[i].model}')";
+                        insertCmd.ExecuteNonQuery();
+
+                        transaction.Commit();
+                    }
+
+                }
+            }
+        }
+
+
 
         public static void updateHostDatabase(List<host> host)
         {

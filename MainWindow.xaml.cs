@@ -147,6 +147,23 @@ namespace JNetchecker //todo refactor into my own name
 
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //imports the csv file. Very much a prototype 05/12/20
+            
+            List<host> importedHosts = new List<host>();
+
+            List<string> searchList = new List<string>();
+            searchList = ImportCSV.loadCsvFile("C:/Temp/commandcentre/test.csv");
+            MessageBox.Show("1");
+
+            importedHosts = ImportCSV.convertCSVStringstoHostsList(searchList) ;
+            MessageBox.Show("2");
+
+                DataAccess.importCSVListHosts(importedHosts); //adds to DB //06/12/20 works with the single value in the list.
+
+            //textbox.Text = importedHosts[0].hostname+ "\t" + importedHosts[0].MAC + "\t" + importedHosts[0].manufacturer;
+        }
     }
 }
 
