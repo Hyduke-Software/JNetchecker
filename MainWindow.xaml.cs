@@ -5,6 +5,7 @@ using System.Net.NetworkInformation;
 using System.Threading;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.Win32;
 
 namespace JNetchecker //todo refactor into my own name
 {
@@ -117,6 +118,7 @@ namespace JNetchecker //todo refactor into my own name
 
         private void search_button(object sender, RoutedEventArgs e)
         {
+            //opens an editdata window
             EditData ed = new EditData();
             ed.Show();
         }
@@ -143,26 +145,37 @@ namespace JNetchecker //todo refactor into my own name
            // string strCmdText = Path.Combine(Directory.GetCurrentDirectory(), "testscript.ps1"); todo use var instead of hardcoded 
 
             Process.Start("powershell", "C:/Users/James/Desktop/testscript.ps1 emerald-iii");
+
             //test to launch a powershell script with a variable. TODO: 14/11/20 add a function such as 
 
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //imports the csv file. Very much a prototype 05/12/20
-            
+            //imports the csv file and stores in DB
+         //todo: 18/12/20 update logic
             List<host> importedHosts = new List<host>();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            //gives file explorer window tofind the file to import
+            if (openFileDialog.ShowDialog() == true)
+            {
 
-            List<string> searchList = new List<string>();
-            searchList = ImportCSV.loadCsvFile("C:/Temp/commandcentre/test.csv");
-            MessageBox.Show("1");
+        importedHosts = ImportCSV.loadCsvFile(openFileDialog.FileName); //should get file path from dialogue box, send to loadCsvFile subroutine.
+                                                                        //searchList is populated with CSV values from file, 19/12/20 changed to use file explorer dialogue box
 
-            importedHosts = ImportCSV.convertCSVStringstoHostsList(searchList) ;
-            MessageBox.Show("2");
+               // DataAccess.importCSVListHosts(importedHosts); //adds to DB //06/12/20 works with the single value in the list.
+                DataAccess.importCSVListHosts(ImportCSV.loadCsvFile(openFileDialog.FileName)); //get file path from openFileDialog, load with loadCsvFile then import with importCSVListHosts() todo: 19/12/20 change logic so that value is passed directly from 
+                 //loadCSVfile to importcsvlisthosts within the DataAccess class
+            }
+            //todo: error action
 
-                DataAccess.importCSVListHosts(importedHosts); //adds to DB //06/12/20 works with the single value in the list.
+        }
 
-            //textbox.Text = importedHosts[0].hostname+ "\t" + importedHosts[0].MAC + "\t" + importedHosts[0].manufacturer;
+        private void TicketsButtonClick(object sender, RoutedEventArgs e)
+        {
+            Tickets ViewTicket = new Tickets();
+
+            ViewTicket.Show();
         }
     }
 }

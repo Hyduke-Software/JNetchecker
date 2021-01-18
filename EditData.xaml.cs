@@ -33,6 +33,7 @@ namespace JNetchecker
             allHostsListBox.ItemsSource = null;
             allHostsListBox.ItemsSource = hosts;
         }
+
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
 
@@ -147,6 +148,16 @@ namespace JNetchecker
             warrantyBox.Text = hosts[allHostsListBox.SelectedIndex].warranty;
             //todo 14/11/20 clean up, error checking required
 
+        }
+
+        private void ButtonClickDeleteSelectedHost(object sender, RoutedEventArgs e)
+        {
+            //todo 16/01/21 add sub to delete the selected host
+            //todone: 17/01/21 added sub to delete selected host
+
+            DataAccess.deleteHost(hostnameLabel.Content.ToString()); //sends the hostname to deleteHost
+            Close();
+            //todo: 17/01/21 add feature to refresh list in Editdata window without needing to close. 
         }
     }
 }

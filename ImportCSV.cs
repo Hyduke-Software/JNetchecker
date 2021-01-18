@@ -8,8 +8,9 @@ namespace JNetchecker
 {
     public class ImportCSV
     {
-            public static List<string> loadCsvFile(string filePath)
-            {
+        //   public static List<string> loadCsvFile(string filePath)
+        public static List<host> loadCsvFile(string filePath)
+        {
             //imports the csv file as a list
                 var reader = new StreamReader(File.OpenRead(filePath));
                 List<string> hostListfromCSV = new List<string>();
@@ -18,10 +19,13 @@ namespace JNetchecker
                     var line = reader.ReadLine();
                     hostListfromCSV.Add(line);
                 }
-              return hostListfromCSV;
+            // return hostListfromCSV;
+            return convertCSVStringstoHostsList(hostListfromCSV);
+            // 18/12/20 if this is right it will call the convertCSVStringstoHostsList and return the value form that.
 
-          //  verifyCSV(hostListfromCSV);
-            }
+
+            //  verifyCSV(hostListfromCSV);
+        }
 
 
         public static List<host> verifyCSV(string hostFromCSV)
@@ -78,8 +82,6 @@ namespace JNetchecker
             {
                 //takes the line from the CSV file, extracts the values seperated by commas.
                 String[] extractedStrings = csvLine.Split(',');
-
-
 
                 ///todo: count how  many values per line by number of commas 06/12/20
 

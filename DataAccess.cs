@@ -286,6 +286,30 @@ namespace JNetchecker
             }
             return DBhosts;
         }
+
+        public static void deleteHost(string hostname) //sends a single host not a list.
+        {
+            var connectionStringBuilder = new SqliteConnectionStringBuilder();
+            connectionStringBuilder.DataSource = "C:/Temp/commandcentre/SqliteDB.db";
+            using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
+            {
+                connection.Open();
+
+                //todo: 11/1/20 add some exception handling
+                using (var transaction = connection.BeginTransaction())
+                {
+                    var insertCmd = connection.CreateCommand();
+
+                    insertCmd.CommandText = $"DELETE FROM hosts WHERE name ='{hostname}' ";
+                    insertCmd.ExecuteNonQuery();
+                    transaction.Commit();
+                }
+
+            }
+        }
+
+
+
         public static DateTime ConvertToDateTime(string str)
         {
             string pattern = @"(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})\.(\d{3})";

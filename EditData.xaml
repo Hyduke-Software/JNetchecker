@@ -25,7 +25,7 @@
             <Label Content="Model" HorizontalAlignment="Left" Margin="530,40,0,0" VerticalAlignment="Top"/>
             <Label Content="Warrany date" HorizontalAlignment="Left" Margin="155,113,0,0" VerticalAlignment="Top"/>
             <Label Content="HOSTNAME" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top" Name="hostnameLabel"/>
-            <Button Content="Update entry" HorizontalAlignment="Left" Margin="0,229,0,0" VerticalAlignment="Top" Click="Update_Host_ButtonClick"/>
+            <Button Content="Update entry" HorizontalAlignment="Left" Margin="5,175,0,0" VerticalAlignment="Top" Click="Update_Host_ButtonClick"/>
             <Button Content="Close window" HorizontalAlignment="Left" Margin="110,229,0,0" VerticalAlignment="Top" Click="Button_Click"/>
             <Button Content="Get all host names" HorizontalAlignment="Left" Margin="269,359,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
             <ListBox Margin="255,190,419,84" Name="allHostsListBox" ItemsSource="{Binding hostResult}" SelectionChanged="allHostsListBox_SelectionChanged_1">
@@ -38,6 +38,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <Button Content="test select" HorizontalAlignment="Left" Margin="84,299,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
+            <Button Content="Delete selected host" HorizontalAlignment="Left" Margin="12,260,0,0" VerticalAlignment="Top" Click="ButtonClickDeleteSelectedHost"/>
         </Grid>
     </Grid>
 </Window>

@@ -1,0 +1,17 @@
+﻿<Window x:Class="JNetchecker.Tickets"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JNetchecker"
+        mc:Ignorable="d"
+        Title="Tickets" Height="450" Width="584">
+    <Grid>
+        <Button Content="Submit" HorizontalAlignment="Left" Margin="330,89,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="99" Margin="15,10,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="305"/>
+        <TextBox HorizontalAlignment="Left" Margin="330,10,0,0" Text="Timestamp" TextWrapping="Wrap" VerticalAlignment="Top" Width="230" Name="TimestampBox"/>
+        <TextBox HorizontalAlignment="Left" Height="21" Margin="330,39,0,0" Text="Poster's name" TextWrapping="Wrap" VerticalAlignment="Top" Width="230"/>
+        <GridSplitter HorizontalAlignment="Center" Height="260" Margin="0,144,0,0" VerticalAlignment="Top" Width="544"/>
+        <TextBox HorizontalAlignment="Left" Height="230" Margin="35,164,0,0" Text="Previous tickets" TextWrapping="Wrap" VerticalAlignment="Top" Width="495" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="previousTicketBox"/>
+    </Grid>
+</Window>
