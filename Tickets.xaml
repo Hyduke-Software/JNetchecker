@@ -7,11 +7,12 @@
         mc:Ignorable="d"
         Title="Tickets" Height="450" Width="584">
     <Grid>
-        <Button Content="Submit" HorizontalAlignment="Left" Margin="330,89,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="99" Margin="15,10,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="305"/>
+        <Button Content="Submit" HorizontalAlignment="Left" Margin="330,89,0,0" VerticalAlignment="Top" Click="Button_ClickStoreTicket"/>
+        <TextBox HorizontalAlignment="Left" Height="99" Margin="15,10,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="305" Name="newTicketTextBox"/>
         <TextBox HorizontalAlignment="Left" Margin="330,10,0,0" Text="Timestamp" TextWrapping="Wrap" VerticalAlignment="Top" Width="230" Name="TimestampBox"/>
-        <TextBox HorizontalAlignment="Left" Height="21" Margin="330,39,0,0" Text="Poster's name" TextWrapping="Wrap" VerticalAlignment="Top" Width="230"/>
+        <TextBox HorizontalAlignment="Left" Height="21" Margin="330,39,0,0" Text="Poster" TextWrapping="Wrap" VerticalAlignment="Top" Width="230" Name="posterNameBox"/>
         <GridSplitter HorizontalAlignment="Center" Height="260" Margin="0,144,0,0" VerticalAlignment="Top" Width="544"/>
         <TextBox HorizontalAlignment="Left" Height="230" Margin="35,164,0,0" Text="Previous tickets" TextWrapping="Wrap" VerticalAlignment="Top" Width="495" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="previousTicketBox"/>
+        <TextBlock HorizontalAlignment="Left" Margin="386,91,0,0" Text="Host:" TextWrapping="Wrap" VerticalAlignment="Top" Width="174" Name="hostNameBlock"/>
     </Grid>
 </Window>

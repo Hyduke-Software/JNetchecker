@@ -173,9 +173,18 @@ namespace JNetchecker //todo refactor into my own name
 
         private void TicketsButtonClick(object sender, RoutedEventArgs e)
         {
-            Tickets ViewTicket = new Tickets();
 
-            ViewTicket.Show();
+            if (dgSimple.SelectedIndex > 0)
+                //requires a row to be selected
+            {
+                Tickets ViewTicket = new Tickets(hosts[dgSimple.SelectedIndex].hostname); //creates new ViewTicket window for selected host
+
+                ViewTicket.Show();
+                return;
+            }
+
+            MessageBox.Show("Error 4: Select a host");
+
         }
     }
 }

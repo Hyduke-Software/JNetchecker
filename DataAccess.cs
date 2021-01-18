@@ -28,6 +28,61 @@ namespace JNetchecker
             }
         }
 
+        public static SqliteConnection connection()
+        {
+            var connectionStringBuilder = new SqliteConnectionStringBuilder();
+
+            //Use DB in project directory.  If it does not exist, create it:
+            connectionStringBuilder.DataSource = "C:/Temp/commandcentre/SqliteDB.db";
+            SqliteConnection connection = new SqliteConnection(connectionStringBuilder.ConnectionString);
+            return connection;
+
+        }
+
+        public static void storeTicket(string hostname, string ticketText, string poster)
+        {
+
+            using (var connectionC = connection()) //uses one subroutine for the connection string. builder
+            {
+                 connectionC.Open();
+                var delTableCmd = connectionC.CreateCommand();
+                delTableCmd.CommandText = $"INSERT INTO tickets (Hostname, Text, Poster) VALUES('{hostname}','{ticketText}','{poster}')";
+                delTableCmd.ExecuteNonQuery();
+                connectionC.Close();
+            }
+
+        }
+
+
+        public static List<TicketList> readTickets(string hostname)
+        {
+
+            List<TicketList> tickets = new List<TicketList>();
+
+            using (var connectionC = connection())
+            {
+                connectionC.Open();
+
+                var selectCmd = connectionC.CreateCommand();
+
+                selectCmd.CommandText = $"SELECT * FROM tickets where Hostname = '{hostname}'";
+
+                using (var reader = selectCmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+
+                        tickets.Add(new TicketList() { Hostname = (string)reader["Hostname"], ID = ((Int64)reader["ID"]), Poster = (string)reader["Poster"], Text = (string)reader["Text"], Timestamp = (string)reader["Timestamp"] });
+
+                    }
+                }
+                connectionC.Close();
+
+            }
+            return tickets;
+        }
+
+
         public static void addHostToDatabase(List<host> newHost)
         {
             //06/12/20 even though it takes a list it only imports the first. To be removed.
