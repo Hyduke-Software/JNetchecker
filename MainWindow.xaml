@@ -7,7 +7,7 @@
         <DockPanel Margin="0,10,0,0">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_New Host" Click="launchNewHostClick"/>
+                    <MenuItem Header="_New Host" Click="NewHost_ButtonClick"/>
                     <MenuItem Header="_Refesh Data" Click="refreshDatabaseClick"/>
                     <MenuItem Header="_PowerShell" Click="launchPowerShell"/>
                     <MenuItem Header="_Save" />
@@ -17,14 +17,25 @@
                 <MenuItem Header="_Help">
                     <MenuItem Header="_Help"/>
                     <MenuItem Header="_About" Click="about_Click"/>
+                </MenuItem>
 
-
+                <MenuItem Header="_Debug">
+                    <MenuItem Header="_Help"/>
+                    <MenuItem Header="_Drop and Reinitilize Database" Click="InitilizeDatabaseButtonClick"/>
+                </MenuItem>
+                <MenuItem Header="_Administration">
+                    <MenuItem Header="_Help"/>
+                    <MenuItem Header="_Add host" Click="NewHost_ButtonClick"/>
+                    <MenuItem Header="_Edit hosts" Click="EditHosts_ButtonClick"/>
+                    <MenuItem Header="_Import CSV" Click="ImportCSVButtonClick"/>
+                    
+                    <MenuItem Header="_Export CSV"/>
                 </MenuItem>
             </Menu>
             <TextBox AcceptsReturn="True" Height="221" />
-          
+
         </DockPanel>
-        <DataGrid Name="dgSimple" Margin="0,19,0,0" Height="251" VerticalAlignment="Top" Background="Azure" AlternatingRowBackground="AliceBlue">
+        <DataGrid Name="dgSimple" Margin="0,39,0,0" Height="231" VerticalAlignment="Top" Background="Azure" AlternatingRowBackground="AliceBlue">
 
 
         </DataGrid>
@@ -38,15 +49,11 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-        <Button Content="ping" HorizontalAlignment="Left" Margin="105,344,0,0" VerticalAlignment="Top" Click="PingButton_Click"/>
-        <Button Content="load from database" HorizontalAlignment="Left" Margin="338,329,0,0" VerticalAlignment="Top" Click="refreshDatabaseClick"/>
-        <Button Content="Add Host" HorizontalAlignment="Left" Margin="356,294,0,0" VerticalAlignment="Top" Click="launchNewHostClick"/>
-        <Button Content="ititilize database del/relopad" HorizontalAlignment="Left" Margin="175,299,0,0" VerticalAlignment="Top" Click="Button_Click_3"/>
-        <Button Content="Search" HorizontalAlignment="Left" Margin="446,379,0,0" VerticalAlignment="Top" Click="search_button"/>
-        <Button Content="import a csv file" Click="Button_Click" RenderTransformOrigin="0.072,0.942" Width="100" Margin="515,309,865,45"/>
+        <Button Content="Ping hosts" HorizontalAlignment="Left" Margin="52,350,0,0" VerticalAlignment="Top" Click="PingButton_Click" Width="67"/>
+        <Button Content="Refresh hosts" HorizontalAlignment="Left" Margin="338,329,0,0" VerticalAlignment="Top" Click="refreshDatabaseClick"/>
+        <Button Content="Add Host" HorizontalAlignment="Left" Margin="356,294,0,0" VerticalAlignment="Top" Click="NewHost_ButtonClick"/>
 
-        <Button Content="Launch RDP" HorizontalAlignment="Left" Margin="329,404,0,0" VerticalAlignment="Top" Click="Button_Click_4"/>
-        <Button Content="Edit Hosts" HorizontalAlignment="Left" Margin="329,374,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.505,0.754" Click="search_button"/>
+        <Button Content="Launch RDP" HorizontalAlignment="Left" Margin="52,379,0,0" VerticalAlignment="Top" Click="Button_Click_4"/>
         <Button Content="Tickets" Width="166" Height="145" Margin="670,292,644,27" Click="TicketsButtonClick"/>
     </Grid>
 

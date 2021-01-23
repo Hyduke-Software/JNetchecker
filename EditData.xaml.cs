@@ -100,7 +100,6 @@ namespace JNetchecker
             }
 
             //shouldn't need all the values as it is only updating those that are static. Example: not IP address and last time online.
-
             DataAccess.updateDatabaseEntry(
                 new host()
                 {
@@ -109,7 +108,7 @@ namespace JNetchecker
                     OS = osBox.Text,
                     MAC = MACBox.Text,
                     purpose = purposeBox.Text,
-                    warranty = purposeBox.Text,
+                    warranty = warrantyBox.Text,
                     serial = serialBox.Text,
                     manufacturer = manufacturerBox.Text,
                     model = modelBox.Text

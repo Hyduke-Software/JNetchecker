@@ -39,14 +39,14 @@ namespace JNetchecker
 
         }
 
-        public static void storeTicket(string hostname, string ticketText, string poster)
+        public static void storeTicket(string hostname, string ticketText, string poster, int active)
         {
 
             using (var connectionC = connection()) //uses one subroutine for the connection string. builder
             {
                  connectionC.Open();
                 var delTableCmd = connectionC.CreateCommand();
-                delTableCmd.CommandText = $"INSERT INTO tickets (Hostname, Text, Poster) VALUES('{hostname}','{ticketText}','{poster}')";
+                delTableCmd.CommandText = $"INSERT INTO tickets (Hostname, Text, Poster, Active) VALUES('{hostname}','{ticketText}','{poster}',{active})";
                 delTableCmd.ExecuteNonQuery();
                 connectionC.Close();
             }
@@ -65,14 +65,14 @@ namespace JNetchecker
 
                 var selectCmd = connectionC.CreateCommand();
 
-                selectCmd.CommandText = $"SELECT * FROM tickets where Hostname = '{hostname}'";
+                selectCmd.CommandText = $"SELECT * FROM tickets where Hostname = '{hostname}' ORDER BY ID desc";
 
                 using (var reader = selectCmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
 
-                        tickets.Add(new TicketList() { Hostname = (string)reader["Hostname"], ID = ((Int64)reader["ID"]), Poster = (string)reader["Poster"], Text = (string)reader["Text"], Timestamp = (string)reader["Timestamp"] });
+                        tickets.Add(new TicketList() { Hostname = (string)reader["Hostname"], ID = ((Int64)reader["ID"]), Poster = (string)reader["Poster"], Text = (string)reader["Text"], Timestamp = (string)reader["Timestamp"] , Active=((Int64)reader["Active"])});
 
                     }
                 }
@@ -81,7 +81,6 @@ namespace JNetchecker
             }
             return tickets;
         }
-
 
         public static void addHostToDatabase(List<host> newHost)
         {
@@ -137,8 +136,6 @@ namespace JNetchecker
                 }
             }
         }
-
-
 
         public static void updateHostDatabase(List<host> host)
         {

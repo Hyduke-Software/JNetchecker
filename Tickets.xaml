@@ -14,5 +14,7 @@
         <GridSplitter HorizontalAlignment="Center" Height="260" Margin="0,144,0,0" VerticalAlignment="Top" Width="544"/>
         <TextBox HorizontalAlignment="Left" Height="230" Margin="35,164,0,0" Text="Previous tickets" TextWrapping="Wrap" VerticalAlignment="Top" Width="495" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="previousTicketBox"/>
         <TextBlock HorizontalAlignment="Left" Margin="386,91,0,0" Text="Host:" TextWrapping="Wrap" VerticalAlignment="Top" Width="174" Name="hostNameBlock"/>
+        <Button Content="Mark ticket as active" HorizontalAlignment="Left" Margin="330,114,0,0" VerticalAlignment="Top" Width="230" Name="MarkActiveButton" Click="MarkActiveButton_Click"/>
+        <Label Content="..." HorizontalAlignment="Left" Height="35" Margin="45,109,0,0" VerticalAlignment="Top" Width="260" Name="activeLabel"/>
     </Grid>
 </Window>

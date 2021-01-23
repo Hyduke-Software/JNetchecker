@@ -101,7 +101,7 @@ namespace JNetchecker //todo refactor into my own name
             refreshTable();
         }
 
-        private void launchNewHostClick(object sender, RoutedEventArgs e)
+        private void NewHost_ButtonClick(object sender, RoutedEventArgs e)
         {
             //opens the New Host window
             NewHost nh = new NewHost();
@@ -110,13 +110,13 @@ namespace JNetchecker //todo refactor into my own name
 
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void InitilizeDatabaseButtonClick(object sender, RoutedEventArgs e)
         {
              DataAccess.InitializeDatabase(this); //delete. recreate database
             refreshTable();
         }
 
-        private void search_button(object sender, RoutedEventArgs e)
+        private void EditHosts_ButtonClick(object sender, RoutedEventArgs e)
         {
             //opens an editdata window
             EditData ed = new EditData();
@@ -133,7 +133,6 @@ namespace JNetchecker //todo refactor into my own name
             catch
             {
                 MessageBox.Show("Error 5: No host selected in the table.");
-
             }
         }
         private void about_Click(object sender, RoutedEventArgs e)
@@ -150,7 +149,7 @@ namespace JNetchecker //todo refactor into my own name
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ImportCSVButtonClick(object sender, RoutedEventArgs e)
         {
             //imports the csv file and stores in DB
          //todo: 18/12/20 update logic
@@ -173,7 +172,6 @@ namespace JNetchecker //todo refactor into my own name
 
         private void TicketsButtonClick(object sender, RoutedEventArgs e)
         {
-
             if (dgSimple.SelectedIndex > 0)
                 //requires a row to be selected
             {
