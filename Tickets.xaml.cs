@@ -36,7 +36,7 @@ namespace JNetchecker
             }
             catch (Exception)
             {
-                MessageBox.Show("Error 6");
+                activeLabel.Content = "This is the first ticket";
 
             }
             ///gets list of tickets relating to this host, passes to PrintTickets to update buttons and text boxes
