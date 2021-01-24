@@ -20,14 +20,15 @@ namespace JNetchecker //todo refactor into my own name
 
         public void fullRefresh()
         {
+            //todo 23/01/21 remove if unused/duplicate
            dgSimple.ItemsSource = null;
            hosts = Config.getHostNames();
            dgSimple.ItemsSource = hosts;
         }
         public void refreshTable()
         {
-            hosts = DataAccess.readHostsFromDatabase(this);
             dgSimple.ItemsSource = null;
+            hosts = DataAccess.readHostsFromDatabase(this);
             dgSimple.ItemsSource = hosts;
         }
         public void PingButton_Click(object sender, EventArgs e)
@@ -172,11 +173,10 @@ namespace JNetchecker //todo refactor into my own name
 
         private void TicketsButtonClick(object sender, RoutedEventArgs e)
         {
-            if (dgSimple.SelectedIndex > 0)
+            if (dgSimple.SelectedIndex > -1)
                 //requires a row to be selected
             {
                 Tickets ViewTicket = new Tickets(hosts[dgSimple.SelectedIndex].hostname); //creates new ViewTicket window for selected host
-
                 ViewTicket.Show();
                 return;
             }

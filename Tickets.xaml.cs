@@ -17,7 +17,7 @@ namespace JNetchecker
     /// </summary>
     public partial class Tickets : Window
     {
-        int active = 3; //defaults to 3 as logic looks for it to fail. TODO 23/01/21 add said logic
+        int active = 0; 
         public Tickets(string hostName)
         {
             InitializeComponent();
@@ -30,9 +30,17 @@ namespace JNetchecker
 
             // List<string[]> ticketResultsList = new List<string[]>(); when it used list
             // tickets = DataAccess.readTickets(hostNameBlock.Text);
-            PrintTickets(DataAccess.readTickets(hostName));
-            ///gets list of tickets relating to this host, passes to PrintTickets to update buttons and text boxes
 
+            try { 
+            PrintTickets(DataAccess.readTickets(hostName));
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error 6");
+
+            }
+            ///gets list of tickets relating to this host, passes to PrintTickets to update buttons and text boxes
+            //todo: 24/01/21 add necessary error handling so that if no ticket exists it does not crash
         }
 
         public void PrintTickets(List<TicketList> tickets)
