@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Microsoft.Data.Sqlite;
@@ -59,27 +60,30 @@ namespace JNetchecker
 
             List<TicketList> tickets = new List<TicketList>();
 
-            using (var connectionC = connection())
-            {
-                connectionC.Open();
-
-                var selectCmd = connectionC.CreateCommand();
-
-                selectCmd.CommandText = $"SELECT * FROM tickets where Hostname = '{hostname}' ORDER BY ID desc";
-
-                using (var reader = selectCmd.ExecuteReader())
+                using (var connectionC = connection())
                 {
-                    while (reader.Read())
+                    connectionC.Open();
+
+                    var selectCmd = connectionC.CreateCommand();
+
+                    selectCmd.CommandText = $"SELECT * FROM tickets where Hostname = '{hostname}' ORDER BY ID desc";
+
+                    using (var reader = selectCmd.ExecuteReader())
                     {
+                        while (reader.Read())
+                        {
 
-                        tickets.Add(new TicketList() { Hostname = (string)reader["Hostname"], ID = ((Int64)reader["ID"]), Poster = (string)reader["Poster"], Text = (string)reader["Text"], Timestamp = (string)reader["Timestamp"] , Active=((Int64)reader["Active"])});
+                            tickets.Add(new TicketList() { Hostname = (string)reader["Hostname"], ID = ((Int64)reader["ID"]), Poster = (string)reader["Poster"], Text = (string)reader["Text"], Timestamp = (string)reader["Timestamp"], Active = ((Int64)reader["Active"]) });
 
+                        }
                     }
-                }
-                connectionC.Close();
+                    connectionC.Close();
 
-            }
-            return tickets;
+
+
+                }
+                return tickets;
+
         }
 
         public static void addHostToDatabase(List<host> newHost)

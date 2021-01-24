@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -17,7 +18,7 @@ namespace JNetchecker
     /// </summary>
     public partial class Tickets : Window
     {
-        int active = 0; 
+        int active = 0;
         public Tickets(string hostName)
         {
             InitializeComponent();
@@ -25,51 +26,80 @@ namespace JNetchecker
             TimestampBox.Text = DateTime.Now.ToString();
             hostNameBlock.Text = hostName;
             posterNameBox.Text = System.Security.Principal.WindowsIdentity.GetCurrent().Name; //sets the Poster box to currently logged on user in Windows. Perhaps add feature to make this locked
-            /// List <TicketList> tickets = new List<TicketList>();
 
 
-            // List<string[]> ticketResultsList = new List<string[]>(); when it used list
-            // tickets = DataAccess.readTickets(hostNameBlock.Text);
+            var task = Task.Run(() => DataAccess.readTickets(hostName));
+            //runs as a task for the timeout feature
+            if (task.Wait(TimeSpan.FromSeconds(10)))
+            {
 
-            try { 
-            PrintTickets(DataAccess.readTickets(hostName));
+                try
+                {
+                    PrintTickets(DataAccess.readTickets(hostName));
+                }
+                catch (Exception)
+                {
+                    activeLabel.Content = "This is the first ticket";
+
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Error 5: Timed out attempting to load tickets");
+
+                return;
+                //returns, gracefully to an unpopulated ticket window
+                //todo: 24/01/21 close the window instead
+                //throw new Exception("Timed out");
+            }
+
+
+
+     
+
+
+
+
+
+
+        }
+
+        public bool PrintTickets(List<TicketList> tickets)
+        {
+            //prints previous tickets for this hostname.
+            try
+            {
+                if (tickets[0].Active == 1)
+                {
+                    activeLabel.Content = "Ticket is active";
+                    activeLabel.Background = Brushes.DarkSeaGreen;
+                    //if active field in database is 1 then the ticket is active
+                    MarkActiveButton.Content = "Mark inactive";
+                    active = 1;
+                }
+                if (tickets[0].Active == 0)
+                {
+                    activeLabel.Content = "Ticket is inactive";
+                    activeLabel.Background = Brushes.DarkOrange;
+                    //if the active field in database is 0 then it is inactive, button press makes active.
+                    MarkActiveButton.Content = "Mark active";
+                    active = 0;
+                }
+
+                foreach (TicketList ticket in tickets)
+                {
+                    //concats these new values with existing textbox contents
+                    previousTicketBox.Text += $"\rPosted {ticket.Timestamp} by {ticket.Poster}:";
+                    previousTicketBox.Text += $"\r{ticket.Text}\n ----------------------------------------------";
+                }
+                return true;
             }
             catch (Exception)
             {
                 activeLabel.Content = "This is the first ticket";
+                return true;
 
-            }
-            ///gets list of tickets relating to this host, passes to PrintTickets to update buttons and text boxes
-            //todo: 24/01/21 add necessary error handling so that if no ticket exists it does not crash
-        }
-
-        public void PrintTickets(List<TicketList> tickets)
-        {
-            //prints previous tickets for this hostname.
-
-
-            if (tickets[0].Active == 1)
-            {
-                activeLabel.Content = "Ticket is active";
-                activeLabel.Background = Brushes.DarkSeaGreen;
-                //if active field in database is 1 then the ticket is active
-                MarkActiveButton.Content = "Mark inactive";
-                active = 1;
-            }
-            if (tickets[0].Active ==0)
-            {
-                activeLabel.Content = "Ticket is inactive";
-                activeLabel.Background = Brushes.DarkOrange;
-                //if the active field in database is 0 then it is inactive, button press makes active.
-                MarkActiveButton.Content = "Mark active";
-                active = 0;
-            }
-
-            foreach (TicketList ticket in tickets)
-            {
-                //concats these new values with existing textbox contents
-                previousTicketBox.Text += $"\rPosted {ticket.Timestamp} by {ticket.Poster}:";
-                previousTicketBox.Text += $"\r{ticket.Text}\n ----------------------------------------------";
             }
 
         }
