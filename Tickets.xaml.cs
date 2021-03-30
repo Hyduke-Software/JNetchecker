@@ -32,7 +32,6 @@ namespace JNetchecker
             //runs as a task for the timeout feature
             if (task.Wait(TimeSpan.FromSeconds(10)))
             {
-
                 try
                 {
                     PrintTickets(DataAccess.readTickets(hostName));
@@ -40,27 +39,17 @@ namespace JNetchecker
                 catch (Exception)
                 {
                     activeLabel.Content = "This is the first ticket";
-
                 }
 
             }
             else
             {
-                MessageBox.Show("Error 5: Timed out attempting to load tickets");
-
+                MessageBox.Show("Error 5: Timed out attempting to load tickets","Error");
                 return;
                 //returns, gracefully to an unpopulated ticket window
                 //todo: 24/01/21 close the window instead
                 //throw new Exception("Timed out");
             }
-
-
-
-     
-
-
-
-
 
 
         }

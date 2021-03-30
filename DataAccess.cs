@@ -183,10 +183,6 @@ namespace JNetchecker
                             transaction.Commit();
                         }
                     }
-                    if(host[i].online == false)
-                    {
-                        break;
-                    }
                 }
             }
         }
