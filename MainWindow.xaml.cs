@@ -12,6 +12,7 @@ namespace JNetchecker //todo refactor into my own name
     public partial class JNetcheckerWindow : Window
     {
         List<host> hosts = new List<host>();
+      
         public JNetcheckerWindow()
         {
             InitializeComponent();
@@ -136,9 +137,16 @@ namespace JNetchecker //todo refactor into my own name
                 MessageBox.Show("Error 5: No host selected in the table.");
             }
         }
+
+        private void Help_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("A lightweight asset manager with monitoring tools developed by Hyduke Software. \n\nSupport: assetmanager@hyduke-software.net. \nCopyright 2020 -" + DateTime.Now.Year.ToString(), " J Asset Manager Light");
+        }
         private void about_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("A lightweight asset manager with monitoring tools developed by Hyduke Software. \n\nSupport: assetmanager@hyduke-software.net. \nCopyright 2020", "J Asset Manager Light");
+            MessageBox.Show("A lightweight asset manager with monitoring tools developed by Hyduke Software. \n\nSupport: assetmanager@hyduke-software.net. \nCopyright 2020 -" + DateTime.Now.Year.ToString(), " J Asset Manager Light");
+
+            //  MessageBox.Show("A lightweight asset manager with monitoring tools developed by Hyduke Software. \n\nSupport: assetmanager@hyduke-software.net. \nCopyright 2020", "J Asset Manager Light");
         }
         private void launchPowerShell(object sender, RoutedEventArgs e)
         {
@@ -183,6 +191,23 @@ namespace JNetchecker //todo refactor into my own name
 
             MessageBox.Show("Error 4: Select a host");
 
+        }
+
+        private void SaveConfig_Click(object sender, RoutedEventArgs e)
+        {
+            //writes the config data to JSON file
+            Config.writeConfig();
+        }
+
+        private void ReadConfig_Click(object sender, RoutedEventArgs e)
+        {
+            //reads the config JSON file
+            Config.readConfig();
+        }
+
+        private void SelectDatabasePath_Click(object sender, RoutedEventArgs e)
+        {
+            Config.SelectDatabaseFile();
         }
     }
 }

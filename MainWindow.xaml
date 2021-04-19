@@ -1,5 +1,5 @@
 ﻿<Window x:Class="JNetchecker.JNetcheckerWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="COMMAND CENTRE 2000" Height="500" Width="1500">
 
@@ -7,10 +7,8 @@
         <DockPanel Margin="0,10,0,0">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_New Host" Click="NewHost_ButtonClick"/>
                     <MenuItem Header="_Refesh Data" Click="refreshDatabaseClick"/>
                     <MenuItem Header="_PowerShell" Click="launchPowerShell"/>
-                    <MenuItem Header="_Save" />
                     <Separator />
                     <MenuItem Header="_Exit"/>
                 </MenuItem>
@@ -20,15 +18,18 @@
                 </MenuItem>
 
                 <MenuItem Header="_Debug">
-                    <MenuItem Header="_Help"/>
+
+                    <MenuItem Header="_Help" Click="about_Click"/>
                     <MenuItem Header="_Drop and Reinitilize Database" Click="InitilizeDatabaseButtonClick"/>
+                    <MenuItem Header="_Write configuration file" Click="SaveConfig_Click"/>
+                    <MenuItem Header="_Read configuration file" Click="ReadConfig_Click"/>
+                    <MenuItem Header="_Select database filepath" Click="SelectDatabasePath_Click"/>
                 </MenuItem>
-                <MenuItem Header="_Administration">
-                    <MenuItem Header="_Help"/>
+                <MenuItem Header="_Host Administration">
+                    <MenuItem Header="_Help" Click="about_Click"/>
                     <MenuItem Header="_Add host" Click="NewHost_ButtonClick"/>
                     <MenuItem Header="_Edit hosts" Click="EditHosts_ButtonClick"/>
                     <MenuItem Header="_Import CSV" Click="ImportCSVButtonClick"/>
-                    
                     <MenuItem Header="_Export CSV"/>
                 </MenuItem>
             </Menu>
@@ -47,11 +48,10 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-        <Button Content="Ping hosts" HorizontalAlignment="Left" Margin="52,350,0,0" VerticalAlignment="Top" Click="PingButton_Click" Width="67"/>
+        <Button Content="Ping hosts" HorizontalAlignment="Left" Margin="19,350,0,0" VerticalAlignment="Top" Click="PingButton_Click" Width="67"/>
         <Button Content="Refresh hosts" HorizontalAlignment="Left" Margin="338,329,0,0" VerticalAlignment="Top" Click="refreshDatabaseClick"/>
-        <Button Content="Add Host" HorizontalAlignment="Left" Margin="356,294,0,0" VerticalAlignment="Top" Click="NewHost_ButtonClick"/>
 
-        <Button Content="Launch RDP" HorizontalAlignment="Left" Margin="52,379,0,0" VerticalAlignment="Top" Click="Button_Click_4"/>
+        <Button Content="Launch RDP on Selected" HorizontalAlignment="Left" Margin="19,375,0,0" VerticalAlignment="Top" Click="Button_Click_4"/>
         <Button Content="Tickets" Width="166" Height="145" Margin="670,292,644,27" Click="TicketsButtonClick"/>
     </Grid>
 
