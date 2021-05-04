@@ -60,8 +60,38 @@ namespace JNetchecker
 
         }
 
+        public static bool checkHostNameUniqueness(string hostname)
+        {
+            //returns a bool on if hostname is already in use
+            bool result = true;
+            using (var connectionC = connection()) //uses one subroutine for the connection string  builder
+            {
+                connectionC.Open();
+                var selectCmd = connectionC.CreateCommand();
+                selectCmd.CommandText = "SELECT COUNT(1) FROM hosts WHERE name = '"+ hostname + "'";
 
-        public static List<TicketList> readTickets(string hostname)
+                using (var reader = selectCmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var output = reader.GetString(0);
+                        //attempts to parse result to bool
+                        try
+                        {
+                            result = Convert.ToBoolean(output);
+                        }
+                        catch (FormatException e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                    }
+                }
+                connectionC.Close();
+            }
+            return result;
+        }
+
+            public static List<TicketList> readTickets(string hostname)
         {
 
             List<TicketList> tickets = new List<TicketList>();
@@ -284,7 +314,7 @@ namespace JNetchecker
                         //string manufacturer = "unknown";
                         string model        = (string)(reader["Model"]);
                         MAC = BlankValueCheck(MAC); //runs the subroutine to check value is not blank, if so displays as Unknown value
-                        string manufacturer = BlankValueCheck((string)reader["Manufacturer"]);
+                       string manufacturer = BlankValueCheck((string)reader["Manufacturer"]);
                         model = BlankValueCheck(model);
                         serial = BlankValueCheck(serial);
                         OS = BlankValueCheck(OS);
@@ -305,7 +335,6 @@ namespace JNetchecker
             if (value.Length < 1)
             {
                 return "Unknown value";
-
             }
             return value;
             
@@ -367,7 +396,7 @@ namespace JNetchecker
 
                var createTableCmd = connectionC.CreateCommand();
                 createTableCmd.CommandText = "CREATE TABLE hosts(name VARCHAR(20) PRIMARY KEY, lastLiveTime DATETIME DEFAULT CURRENT_TIMESTAMP, MAC VARCHAR(17) DEFAULT '', lastIP VARCHAR(39) DEFAULT '', " +
-                  "timesSeen int DEFAULT 0, purpose VARCHAR (100) DEFAULT '',serial VARCHAR (100) DEFAULT '', OS varchar(50) DEFAULT '', Manufacturer VARCHAR(50), Model VARCHAR (50) DEFAULT '',warranty VARCHAR(50) DEFAULT '', online int DEFAULT 0, response int DEFAULT 0)"; // I believe Windows max length 15.
+                  "timesSeen int DEFAULT 0, purpose VARCHAR (100) DEFAULT '',serial VARCHAR (100) DEFAULT '', OS varchar(50) DEFAULT '', Manufacturer VARCHAR(50) DEFAULT '', Model VARCHAR (50) DEFAULT '',warranty VARCHAR(50) DEFAULT '', online int DEFAULT 0, response int DEFAULT 0)"; // I believe Windows max length 15.
                 createTableCmd.ExecuteNonQuery();
 
                 //Seed some data:

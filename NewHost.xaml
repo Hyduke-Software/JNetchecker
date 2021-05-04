@@ -5,21 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JNetchecker"
         mc:Ignorable="d"
-        Title="Add a new host for monitoring" Height="450" Width="800">
-    <Grid>
-        <TextBox HorizontalAlignment="Left" Margin="160,64,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="newHostnameEntryBox"/>
-        <TextBox HorizontalAlignment="Left" Margin="160,87,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="newMACEntryBox"/>
-        <TextBox HorizontalAlignment="Left" Margin="160,110,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="newPurposeEntryBox"/>
-        <TextBox HorizontalAlignment="Left" Margin="160,133,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="newOperatingSystemEntryBox"/>
-        <TextBox HorizontalAlignment="Left" Margin="160,156,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="newSerialEntryBox"/>
+        Title="Add a new host for monitoring" Height="450" Width="384">
+    <Grid Margin="0,0,60,0">
+        <TextBox HorizontalAlignment="Left" Margin="160,64,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Name="newHostnameEntryBox"/>
+        <TextBox HorizontalAlignment="Left" Margin="160,87,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Name="newMACEntryBox"/>
+        <TextBox HorizontalAlignment="Left" Margin="160,110,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Name="newPurposeEntryBox"/>
+        <TextBox HorizontalAlignment="Left" Margin="160,133,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Name="newOperatingSystemEntryBox"/>
+        <TextBox HorizontalAlignment="Left" Margin="160,156,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Name="newSerialEntryBox"/>
         <Label Content="Host name" HorizontalAlignment="Left" Margin="55,60,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0.04" />
         <Label Content="MAC address" HorizontalAlignment="Left" Margin="54,83,0,0" VerticalAlignment="Top"/>
         <Label Content="Purpose" HorizontalAlignment="Left" Margin="55,106,0,0" VerticalAlignment="Top"/>
         <Label Content="Operating System" HorizontalAlignment="Left" Margin="55,129,0,0" VerticalAlignment="Top"/>
-       
+
         <Label Content="Serial" HorizontalAlignment="Left" Margin="55,152,0,0" VerticalAlignment="Top"/>
-        <Button Content="Submit new" HorizontalAlignment="Left" Margin="213,197,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <Button Content="Cancel" HorizontalAlignment="Left" Margin="62,197,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+        <Button Content="Submit new" HorizontalAlignment="Left" Margin="213,309,0,0" VerticalAlignment="Top" Click="SubmitNewHostButton_Click"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="62,309,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+        <TextBox HorizontalAlignment="Left" Margin="160,182,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" x:Name="newManufacturerEntryBox"/>
+        <Label Content="Manufacturer" HorizontalAlignment="Left" Margin="55,178,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="160,213,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" x:Name="newModelEntryBox"/>
+        <Label Content="Model" HorizontalAlignment="Left" Margin="54,209,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="159,239,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="161" x:Name="newWarrantyEntryBox"/>
+        <Label Content="Warranty date" HorizontalAlignment="Left" Margin="54,235,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

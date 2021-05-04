@@ -8,7 +8,7 @@
         Title="Edit data" Height="450" Width="864">
     <Grid>
         <Grid Margin="10">
-            <Button Content="search" HorizontalAlignment="Left" Margin="55,359,0,0" VerticalAlignment="Top" Click="Button_Click_3"/>
+            <Button Content="search" HorizontalAlignment="Left" Margin="55,359,0,0" VerticalAlignment="Top" Click="SearchButton_Click"/>
             <TextBox HorizontalAlignment="Left" Margin="0,71,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Name="osBox"/>
             <TextBox HorizontalAlignment="Left" Margin="25,331,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Name="searchbox"/>
             <TextBox HorizontalAlignment="Left" Margin="155,71,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Name="purposeBox"/>

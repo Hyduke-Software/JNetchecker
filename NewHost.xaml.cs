@@ -22,9 +22,9 @@ namespace JNetchecker
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SubmitNewHostButton_Click(object sender, RoutedEventArgs e)
         {
-            //todo: add checking
+            //todo: 02/05/21 add checking that host name is not already in use.
             List<host> newHostsToSend = new List<host>();
 
             if (newHostnameEntryBox.Text.Length == 0)
@@ -40,7 +40,8 @@ namespace JNetchecker
             //todo: add the rest of value boxes
             if (newHostnameEntryBox.Text.Length > 0)
             {
-                newHostsToSend.Add(new host() { hostname = newHostnameEntryBox.Text, MAC= newMACEntryBox.Text, purpose=newPurposeEntryBox.Text, OS=newOperatingSystemEntryBox.Text, serial=newSerialEntryBox.Text});
+                DataAccess.checkHostNameUniqueness(newHostnameEntryBox.Text);
+                newHostsToSend.Add(new host() { hostname = newHostnameEntryBox.Text, MAC= newMACEntryBox.Text, purpose=newPurposeEntryBox.Text, OS=newOperatingSystemEntryBox.Text, serial=newSerialEntryBox.Text, });
 
                 DataAccess.addHostToDatabase(newHostsToSend);
 

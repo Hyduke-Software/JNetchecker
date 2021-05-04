@@ -13,9 +13,6 @@ namespace JNetchecker
 {
     public static class Config
     {
-        public static string rootFolder = @"C:\Temp\commandcentre\";
-        //Default file. MAKE SURE TO CHANGE THIS LOCATION AND FILE PATH TO YOUR FILE   
-        static public string textFile = @"C:\Temp\commandcentre\commandcentre.txt";
         public static Dictionary<string, bool> configValuesType = new Dictionary<string, bool>(); //janky method of marking the expected value as int or char. TRUE = INT, FALSE =CHAR
         public static Dictionary<string, string> configValues = new Dictionary<string, string>();
         //  List<host> hosts = new List<host>();
@@ -30,18 +27,22 @@ namespace JNetchecker
         {
             string jsonFilepath = @"c:\temp\netcheck.json";
             string databaseFilepath = SelectDatabaseFile();
-            if (databaseFilepath == "MISSING")
+            string logFilepath = SelectLogFile();
+
+            if (databaseFilepath == "MISSING" || logFilepath == "MISSING")
             {
                 MessageBox.Show("Error 9: Invalid file path provided.");
                 return;
-
             }
+
             //string filepath = @"c:\temp\netcheck.json";
             ConfigurationValues cv = new ConfigurationValues() ;
             cv.TemperatureCelsius = 69;
             cv.DatabaseFilepath = databaseFilepath;
-            // cv.DatabaseFilepath = @"C:\Temp\commandcentre\SqliteDB.db";
-
+            cv.RefreshDurationinHours = 1;
+            cv.LoggerFilepath = logFilepath;
+            DateTime sourceTime = DateTime.Now;
+            cv.ConfigurationDate = new DateTime(sourceTime.Year, sourceTime.Month, sourceTime.Day, sourceTime.Hour, sourceTime.Minute, 0);
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
@@ -53,16 +54,6 @@ namespace JNetchecker
 
         }
 
-       /* public async static ConfigurationValues readConfig()
-        {
-            An asyncrhornous version of the method.
-            ConfigurationValues cv = new ConfigurationValues();
-            string filepath = @"c:\temp\netcheck.json";
-            using FileStream openStream = File.OpenRead(filepath);
-            cv = await JsonSerializer.DeserializeAsync<ConfigurationValues>(openStream);
-            MessageBox.Show("Summary: " +cv.Summary +"\n temp: "+cv.TemperatureCelsius);
-        }
-        */
         public static ConfigurationValues readConfig()
         {
             //19/04/21 reads the configuration file with a hardcoded location
@@ -88,14 +79,38 @@ namespace JNetchecker
             return "MISSING";
 
         }
+        public static string SelectLogFile()
+        {
+            //gets the filepath for the logs
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+
+                string filepath = (openFileDialog.FileName); //should get file path from dialogue box, send to loadCsvFile subroutine.
+                return filepath;
+            }
+            //todo: error action
+            return "MISSING";
+
+        }
 
         public static List<host> getHostNames()
+        //this can probably be removed 20/04/21 as the CSV import works better
         {
-            List<host> hosts = new List<host>();
-            if (File.Exists(textFile))
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            string textFilepath = "";
+
+                 if (openFileDialog.ShowDialog() == true)
+            {
+
+                 textFilepath = (openFileDialog.FileName);
+            }
+                List<host> hosts = new List<host>();
+            if (File.Exists(textFilepath))
             {
                 // Read a text file line by line.  
-                string[] lines = File.ReadAllLines(textFile);
+                string[] lines = File.ReadAllLines(textFilepath);
 
 
                 for (int i = 0; i < lines.Length; i++)
@@ -115,12 +130,21 @@ namespace JNetchecker
         }
         public static void addNewHost(string newHostName, List<host> hosts)
         {
-            if (File.Exists(textFile))
+            //this can probably be removed 20/04/21
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            string textFilepath = "";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+
+                textFilepath = (openFileDialog.FileName);
+            }
+            if (File.Exists(textFilepath))
             {
                 // Read a text file line by line.  
-                string[] lines = File.ReadAllLines(textFile);
+                string[] lines = File.ReadAllLines(textFilepath);
                 using (StreamWriter file =
-              new StreamWriter(textFile, true))
+              new StreamWriter(textFilepath, true))
                 {
                     file.WriteLine(newHostName);
                     //adds new host to end
@@ -135,5 +159,8 @@ public class ConfigurationValues
 {
 
     public int TemperatureCelsius { get; set; }
+    public int RefreshDurationinHours { get; set; }
     public string DatabaseFilepath { get; set; }
+    public string LoggerFilepath { get; set; }
+    public DateTime ConfigurationDate { get; set; }
 }

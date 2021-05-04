@@ -34,9 +34,9 @@ namespace JNetchecker
             allHostsListBox.ItemsSource = hosts;
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //search button
             if (searchbox.Text == "")
             {
                 MessageBox.Show("Enter a hostname to search");
@@ -45,38 +45,39 @@ namespace JNetchecker
             hosts = DataAccess.readHostsFromDatabase(j); //gets data into the hosts variable
 
             List<host> hostResult = new List<host>();
-
             //todo: 10/11/20 add some error checking!!!!
             hostnameLabel.Content = searchbox.Text;
             foreach (host element in hosts)
             {
                 if (element.hostname == searchbox.Text)
                 {
-                    //todo: 10/11/20 make this copy the value of the element in one swoop
                     hostResult.Add(new host()
                     {
-                        hostname = element.hostname,
-                        lastIP = element.lastIP,
-                        timesSeen = element.timesSeen,
-                        OS = element.OS,
-                        MAC = element.MAC,
-                        purpose = element.purpose,
-                        online = element.online,
-                        responseMS = element.responseMS,
-                        lastLiveTime = element.lastLiveTime
-                    });
-                    // DBhosts.Add(new host() { hostname = hostName, lastIP = lastIP, timesSeen = timesSeen, OS = OS, MAC = MAC, purpose = purpose, online = online, responseMS = response, lastLiveTime = timeStamp });
+                        hostname        = element.hostname,
+                        lastIP          = element.lastIP,
+                        timesSeen       = element.timesSeen,
+                        OS              = element.OS,
+                        MAC             = element.MAC,
+                        purpose         = element.purpose,
+                        manufacturer    = element.manufacturer,
+                        model           = element.model,
+                        online          = element.online,
+                        location        = element.location,
+                        owner           = element.owner,
+                        notes           = element.notes,
+                        responseMS      = element.responseMS,
+                        lastLiveTime    = element.lastLiveTime
+                    }) ;
 
-                    break; // If you only want to find the first instance a break here would be best for your application
+                    break;
                 }
             }
-
 
             osBox.Text = hostResult[0].OS;
             purposeBox.Text = hostResult[0].purpose;
             MACBox.Text = hostResult[0].MAC;
-            manufacturerBox.Text = "JamesTech";
-            modelBox.Text = "Computer 2000";
+            manufacturerBox.Text = hostResult[0].manufacturer;
+            modelBox.Text = hostResult[0].model;
             serialBox.Text = hostResult[0].serial;
             warrantyBox.Text = hostResult[0].warranty;
             //  
