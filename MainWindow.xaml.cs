@@ -17,6 +17,7 @@ namespace JNetchecker //todo refactor into my own name
         {
             InitializeComponent();
             refreshTable();
+            JLogger.ExampleAsync(System.Security.Principal.WindowsIdentity.GetCurrent().Name + "\tlaunched application");
         }
 
         public void fullRefresh()
@@ -34,13 +35,13 @@ namespace JNetchecker //todo refactor into my own name
         }
         public void PingButton_Click(object sender, EventArgs e)
         {
+            JLogger.ExampleAsync(System.Security.Principal.WindowsIdentity.GetCurrent().Name + "\tcalled ping task");
+
             //calls the pinger() and then uppdates the table with refreshTable()
-                Thread t = new Thread(() => pinger());
+            Thread t = new Thread(() => pinger());
                 t.Start();
             refreshTable();
         }
-
-
         public void pinger() { 
         Ping p = new Ping();
         PingReply reply;
@@ -114,7 +115,8 @@ namespace JNetchecker //todo refactor into my own name
 
         private void InitilizeDatabaseButtonClick(object sender, RoutedEventArgs e)
         {
-             DataAccess.InitializeDatabase(this); //delete. recreate database
+            JLogger.ExampleAsync(System.Security.Principal.WindowsIdentity.GetCurrent().Name + "\tdeleted and reinitilized database");
+            DataAccess.InitializeDatabase(this); //delete. recreate database
             refreshTable();
         }
 
@@ -130,6 +132,8 @@ namespace JNetchecker //todo refactor into my own name
             try
             {
                 Process.Start("mstsc", "/v:" + hosts[dgSimple.SelectedIndex].hostname);
+                JLogger.ExampleAsync(System.Security.Principal.WindowsIdentity.GetCurrent().Name + "\tlaunched mstsc onto "+ hosts[dgSimple.SelectedIndex].hostname);
+
                 //opens a new MSTSC window going to the server row selected
             }
             catch

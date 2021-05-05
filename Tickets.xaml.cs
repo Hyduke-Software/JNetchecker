@@ -101,8 +101,6 @@ namespace JNetchecker
             newTicketTextBoxCleaned = newTicketTextBoxCleaned.Replace("'", "''"); //adds extra speechmark as SQlite expects two if one is used.
             String poseterBoxTextBoxCleaned = posterNameBox.Text;
             poseterBoxTextBoxCleaned = poseterBoxTextBoxCleaned.Replace("'", "''"); //adds extra speechmark as SQlite expects two if one is used.
-
-
             DataAccess.storeTicket(hostNameBlock.Text, newTicketTextBoxCleaned, poseterBoxTextBoxCleaned, active);
 
             Close(); //todo add refresh

@@ -50,6 +50,7 @@ namespace JNetchecker
             //outputs the JSON file with user friendly indentation
             string jsonString = JsonSerializer.Serialize(cv,options);
             File.WriteAllText(jsonFilepath, jsonString);
+            JLogger.ExampleAsync(System.Security.Principal.WindowsIdentity.GetCurrent().Name + "\twrote new config file");
 
 
         }
