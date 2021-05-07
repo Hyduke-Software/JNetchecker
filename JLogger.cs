@@ -6,14 +6,13 @@ namespace JNetchecker
 {
     class JLogger
     {
-        public static async Task ExampleAsync(string logText)
+        public static async Task WriteGenericLogFile(string logText)
         {
-        //writes a new log entry into the logfile specified in the config JSON file
+        //writes a new log entry into the logfile specified in the config JSON file, with a timestamp
             string filepath = Config.readConfig().LoggerFilepath;
             using (StreamWriter file = new StreamWriter(filepath, true))
             {
-               DateTime sourceTime = DateTime.Now;
-                await file.WriteLineAsync(sourceTime + "\t" + logText);
+                await file.WriteLineAsync((DateTime.Now) + "\t" + logText);
             }
 
         }

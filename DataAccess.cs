@@ -48,12 +48,20 @@ namespace JNetchecker
 
         public static void storeTicket(string hostname, string ticketText, string poster, int active)
         {
-
+            //stores ticket, and sets the active flag in hosts
             using (var connectionC = connection()) //uses one subroutine for the connection string builder
             {
                  connectionC.Open();
                 var delTableCmd = connectionC.CreateCommand();
                 delTableCmd.CommandText = $"INSERT INTO tickets (Hostname, Text, Poster, Active) VALUES('{hostname}','{ticketText}','{poster}',{active})";
+                delTableCmd.ExecuteNonQuery();
+                connectionC.Close();
+            }
+            using (var connectionC = connection()) //uses one subroutine for the connection string builder
+            {
+                connectionC.Open();
+                var delTableCmd = connectionC.CreateCommand();
+                delTableCmd.CommandText = $"UPDATE hosts set activeticket = '{active}' WHERE name = '{hostname}'";
                 delTableCmd.ExecuteNonQuery();
                 connectionC.Close();
             }
@@ -93,30 +101,20 @@ namespace JNetchecker
 
             public static List<TicketList> readTickets(string hostname)
         {
-
             List<TicketList> tickets = new List<TicketList>();
-
                 using (var connectionC = connection())
                 {
                     connectionC.Open();
-
                     var selectCmd = connectionC.CreateCommand();
-
                     selectCmd.CommandText = $"SELECT * FROM tickets where Hostname = '{hostname}' ORDER BY ID desc";
-
                     using (var reader = selectCmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-
                             tickets.Add(new TicketList() { Hostname = (string)reader["Hostname"], ID = ((Int64)reader["ID"]), Poster = (string)reader["Poster"], Text = (string)reader["Text"], Timestamp = (string)reader["Timestamp"], Active = ((Int64)reader["Active"]) });
-
                         }
                     }
                     connectionC.Close();
-
-
-
                 }
                 return tickets;
 
@@ -188,14 +186,12 @@ namespace JNetchecker
      }
         public static void incrementSeenCount(List<host> host)
         {
-
             using (var connectionC = connection()) //uses one subroutine for the connection string builder
             {
                 connectionC.Open();
                 for (int i = 0; i < host.Count; i++)
                 {
                     if (host[i].online == true) //if the host is marked as online increment the count for timesSeen
-
                     {
                         using (var transaction = connectionC.BeginTransaction())
                         {
@@ -254,6 +250,29 @@ namespace JNetchecker
 
             }
         }
+
+        public static void updateHostsTableActivetickets() //sends a single host not a list.
+        {
+            //updates the hosts table to set value to match tickets table value. Doesn't work as it doesn't explicitly search for most recent. To remove 07/05/21
+            using (var connectionC = connection()) //uses one subroutine for the connection string builder
+            {
+                connectionC.Open();
+
+
+                using (var transaction = connectionC.BeginTransaction())
+                {
+                    var insertCmd = connectionC.CreateCommand();
+                    insertCmd.CommandText = $"UPDATE hosts SET activeticket = (SELECT Active FROM tickets WHERE tickets.Hostname = hosts.name);";
+                    //insertCmd.CommandText = $"UPDATE hosts SET activeticket = ifnull((SELECT Active FROM tickets WHERE tickets.Hostname = hosts.name),0);";
+                    insertCmd.ExecuteNonQuery();
+                    transaction.Commit();
+                }
+
+            }
+        }
+
+
+
         public static List<host> readHostsNamesOnlyFromDatabase(JNetcheckerWindow j)
         {
             List<host> DBhosts = new List<host>();
@@ -304,7 +323,8 @@ namespace JNetchecker
                         string lastIP = (string)reader["lastIP"];
                         string OS = (string)reader["OS"];
                         bool online = Convert.ToBoolean((long)reader["online"]);
-                        
+                        bool ticketactive = Convert.ToBoolean((long)reader["activeticket"]);
+
                         string warranty = (string)reader["warranty"]; //todo: 09/11/20 build functions to do with dates
                         int timesSeen = Convert.ToInt32((long)reader["timesSeen"]);
                         int response = Convert.ToInt32((long)reader["response"]);
@@ -322,7 +342,7 @@ namespace JNetchecker
                         warranty = BlankValueCheck(warranty);
 
 
-                        DBhosts.Add(new host() { hostname = hostName, lastIP = lastIP, timesSeen = timesSeen, OS = OS, MAC = MAC, purpose = purpose, online = online, responseMS = response, lastLiveTime= timeStamp, serial=serial, manufacturer=manufacturer,model=model,warranty=warranty});
+                        DBhosts.Add(new host() { hostname = hostName, lastIP = lastIP, timesSeen = timesSeen, OS = OS, MAC = MAC, purpose = purpose, online = online, responseMS = response, lastLiveTime= timeStamp, serial=serial, manufacturer=manufacturer,model=model,warranty=warranty, ticketactive= ticketactive });
                     }
                 }
                 connectionC.Close();
@@ -384,6 +404,7 @@ namespace JNetchecker
 
         public static void InitializeDatabase(JNetcheckerWindow j)
         {
+            //todo: 07/05/21 initilize the tickets table too, add activeticket bool for hosts
           List<host> DBhosts = new List<host>();
             using (var connectionC = connection()) //uses one subroutine for the connection string builder
             {
